@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Router — Buscar Aeroporto</title>
+    <link rel="stylesheet" href="style.css"/>
+    <style>
+        #busca-container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        #busca-container h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        #busca-container p {
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        #campo-busca {
+            width: 100%;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 24px;
+        }
+
+        #campo-busca:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 12px;
+            color: #888;
+            border-bottom: 1px solid #333;
+            font-weight: 500;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #222;
+        }
+
+        tr:hover td {
+            background: #1a1a1a;
+            cursor: pointer;
+        }
+
+        .iata-badge {
+            background: #2563eb;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        #total {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        #voltar {
+            display: inline-block;
+            margin-bottom: 24px;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        #voltar:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div id="header">
+    <h1>✈ Flight Router</h1>
+</div>
+
+<div id="busca-container">
+    <a href="index.html" id="voltar">← Voltar ao mapa</a>
+    <h2>Encontre seu aeroporto</h2>
+    <p>Busque pelo nome da cidade, aeroporto ou código IATA.</p>
+
+    <input
+        id="campo-busca"
+        placeholder="Ex: São Paulo, Tokyo, GRU..."
+        oninput="buscar(this.value)"
+    />
+
+    <div id="total"></div>
+
+    <table id="tabela">
+        <thead>
+            <tr>
+                <th>IATA</th>
+                <th>Aeroporto</th>
+                <th>Cidade</th>
+                <th>País</th>
+            </tr>
+        </thead>
+        <tbody id="resultados"></tbody>
+    </table>
+</div>
+
+<script>
+    let timer = null;
+
+    function buscar(valor) {
+        clearTimeout(timer);
+        if (valor.length < 2) {
+            document.getElementById('resultados').innerHTML = '';
+            document.getElementById('total').textContent = '';
+            return;
+        }
+
+        timer = setTimeout(async () => {
+            const res = await fetch(`http://localhost:8000/aeroportos?busca=${encodeURIComponent(valor)}`);
+            const data = await res.json();
+
+            document.getElementById('total').textContent =
+                `${data.total} aeroporto(s) encontrado(s)${data.total > 50 ? ' — mostrando os primeiros 50' : ''}`;
+
+            const tbody = document.getElementById('resultados');
+            tbody.innerHTML = '';
+
+            data.resultados.forEach(a => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span class="iata-badge">${a.iata || '—'}</span></td>
+                    <td>${a.nome}</td>
+                    <td>${a.cidade}</td>
+                    <td>${a.pais}</td>
+                `;
+                tr.onclick = () => {
+                    if (a.iata) {
+                        window.location.href = `index.html?origem=${a.iata}`;
+                    }
+                };
+                tbody.appendChild(tr);
+            });
+
+        }, 300);
+    }
+</script>
+
+</body>
+</html>

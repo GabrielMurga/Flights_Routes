@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Router</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div id="header">
+    <h1>✈ Flight Router</h1>
+    <a href="aeroportos.html" id="link-busca">Não sabe o código IATA? Busque aqui</a>
+    <div id="controls">
+        <input id="origem" placeholder="Origem" maxlength="3" value="Origem"/>
+        <input id="destino" placeholder="Destino" maxlength="3" value="Destino"/>
+        <select id="modo">
+            <option value="distancia">Menor distância</option>
+            <option value="escalas">Menos escalas</option>
+        </select>
+        <button id="btn-rotas" onclick="verRotas()">Ver rotas disponiveis para origem</button>
+        <button id="btn" onclick="buscarRota()">Buscar Rotas</button>
+    </div>
+</div>
+
+<div id="info">Digite os códigos IATA e clique em buscar.</div>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
