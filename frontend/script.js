@@ -22,7 +22,7 @@ async function buscarRota() {
     document.getElementById('info').textContent = 'Calculando rota...';
 
     try {
-        const res = await fetch(`http://localhost:8000/rota?origem=${origem}&destino=${destino}&modo=${modo}`);
+        const res = await fetch(`https://flights-routes.onrender.com./rota?origem=${origem}&destino=${destino}&modo=${modo}`);
         const data = await res.json();
 
         if (!res.ok) {
@@ -140,7 +140,7 @@ async function verRotas() {
     document.getElementById('info').textContent = 'Carregando rotas...';
 
     try {
-        const res = await fetch(`http://localhost:8000/rotas/${origem}`);
+        const res = await fetch(`https://flights-routes.onrender.com./rotas/${origem}`);
         const data = await res.json();
 
         if (!res.ok) {
