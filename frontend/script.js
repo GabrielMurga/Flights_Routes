@@ -22,7 +22,7 @@ async function buscarRota() {
     document.getElementById('info').textContent = 'Calculando rota...';
 
     try {
-        const res = await fetch(`https://flights-routes.onrender.com./rota?origem=${origem}&destino=${destino}&modo=${modo}`);
+        const res = await fetch(`https://flights-routes.onrender.com/rota?origem=${origem}&destino=${destino}&modo=${modo}`);
         const data = await res.json();
 
         if (!res.ok) {
@@ -140,7 +140,7 @@ async function verRotas() {
     document.getElementById('info').textContent = 'Carregando rotas...';
 
     try {
-        const res = await fetch(`https://flights-routes.onrender.com./rotas/${origem}`);
+        const res = await fetch(`https://flights-routes.onrender.com/rotas/${origem}`);
         const data = await res.json();
 
         if (!res.ok) {
@@ -152,7 +152,6 @@ async function verRotas() {
 
         const origemLatLon = [data.lat, data.lon];
 
-        // marcador da origem
         L.circleMarker(origemLatLon, {
             radius: 6,
             color: '#2563eb',
@@ -163,7 +162,6 @@ async function verRotas() {
         .bindTooltip(data.aeroporto, { permanent: true, className: 'iata-label' })
         .addTo(rotaLayer);
 
-        // destinos e linhas
         data.destinos.forEach(a => {
             L.circleMarker([a.lat, a.lon], {
                 radius: 3,

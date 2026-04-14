@@ -135,7 +135,7 @@
         }
 
         timer = setTimeout(async () => {
-            const res = await fetch(`https://flights-routes.onrender.com./aeroportos?busca=${encodeURIComponent(valor)}`);
+            const res = await fetch(`https://flights-routes.onrender.com/aeroportos?busca=${encodeURIComponent(valor)}`);
             const data = await res.json();
 
             document.getElementById('total').textContent =
